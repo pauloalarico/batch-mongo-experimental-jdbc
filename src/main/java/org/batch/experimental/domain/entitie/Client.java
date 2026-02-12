@@ -1,15 +1,14 @@
 package org.batch.experimental.domain.entitie;
 
 import lombok.Builder;
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Builder
+@Getter
 public class Client {
-    @Id
-    private String id;
     private String externalId;
     private String name;
     private String email;
