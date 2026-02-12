@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -24,10 +23,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class BatchConfig {
     @Value("${apps.source.file-path}")
     private String path;
-
-    private final MongoTemplate mongoTemplate;
-    @Value("${apps.source.collection-mongo}")
-    private String collection;
 
     @Bean
     public Job jobBuilder(JobRepository jobRepository, Step initialStep) {
@@ -61,12 +56,5 @@ public class BatchConfig {
                 .names("externalId", "name", "email", "productType", "amount", "active", "creationDate")
                 .targetType(Client.class)
                 .build();
-    }
-
-    @Bean
-    public ItemWriter<Client> itemWriter() {
-        MongoItemWriter<Client> writer = new MongoItemWriter<>(mongoTemplate);
-        writer.setCollection(collection);
-        return writer;
     }
 }

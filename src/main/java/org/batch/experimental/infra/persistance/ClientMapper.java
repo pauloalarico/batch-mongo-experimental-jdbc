@@ -1,7 +1,9 @@
 package org.batch.experimental.infra.persistance;
 
 import org.batch.experimental.domain.entitie.Client;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientMapper {
 
     public ClientDocument toDocument(Client client) {
