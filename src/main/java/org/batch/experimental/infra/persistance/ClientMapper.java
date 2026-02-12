@@ -1,7 +1,11 @@
 package org.batch.experimental.infra.persistance;
 
+import org.batch.experimental.application.ClientFileDTO;
 import org.batch.experimental.domain.entitie.Client;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Component
 public class ClientMapper {
@@ -18,15 +22,19 @@ public class ClientMapper {
                 .build();
     }
 
-    public Client toDomain(ClientDocument document) {
+    public Client toDomain(ClientFileDTO dto) {
         return Client.builder()
-                .externalId(document.getExternalId())
-                .name(document.getName())
-                .email(document.getEmail())
-                .productType(document.getProductType())
-                .amount(document.getAmount())
-                .active(document.isActive())
-                .creationDate(document.getCreationDate())
+                .externalId(dto.externalId())
+                .name(dto.name())
+                .email(dto.email())
+                .productType(dto.productType())
+                .amount(dto.amount())
+                .active(dto.active())
+                .creationDate(convertDate(dto.creationDate()))
                 .build();
+    }
+
+    private LocalDate convertDate(String date) {
+        return YearMonth.parse(date).atDay(1);
     }
 }

@@ -1,6 +1,7 @@
 package org.batch.experimental.infra.batch;
 
 import lombok.RequiredArgsConstructor;
+import org.batch.experimental.application.ClientFileDTO;
 import org.batch.experimental.domain.entitie.Client;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -10,7 +11,6 @@ import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemReader;
 import org.springframework.batch.infrastructure.item.ItemWriter;
-import org.springframework.batch.infrastructure.item.data.MongoItemWriter;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -35,10 +35,10 @@ public class BatchConfig {
     @Bean
     public Step initialStep(JobRepository jobRepository,
                             PlatformTransactionManager transactionManager,
-                            ItemReader<Client> reader,
+                            ItemReader<ClientFileDTO> reader,
                             ItemWriter<Client> writer) {
         return new StepBuilder("initial-step", jobRepository)
-                .<Client,Client>chunk(5)
+                .<ClientFileDTO,Client>chunk(5)
                 .transactionManager(transactionManager)
                 .reader(reader)
                 .writer(writer)
