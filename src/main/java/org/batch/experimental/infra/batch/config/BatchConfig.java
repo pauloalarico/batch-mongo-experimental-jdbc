@@ -1,4 +1,4 @@
-package org.batch.experimental.infra.batch;
+package org.batch.experimental.infra.batch.config;
 
 import lombok.RequiredArgsConstructor;
 import org.batch.experimental.application.ClientFileDTO;
