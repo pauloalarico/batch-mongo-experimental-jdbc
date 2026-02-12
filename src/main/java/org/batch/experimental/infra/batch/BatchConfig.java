@@ -9,6 +9,7 @@ import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.batch.infrastructure.item.ItemReader;
 import org.springframework.batch.infrastructure.item.ItemWriter;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
@@ -36,25 +37,27 @@ public class BatchConfig {
     public Step initialStep(JobRepository jobRepository,
                             PlatformTransactionManager transactionManager,
                             ItemReader<ClientFileDTO> reader,
-                            ItemWriter<Client> writer) {
+                            ItemWriter<Client> writer,
+                            ItemProcessor<ClientFileDTO, Client> processor) {
         return new StepBuilder("initial-step", jobRepository)
                 .<ClientFileDTO,Client>chunk(5)
                 .transactionManager(transactionManager)
                 .reader(reader)
+                .processor(processor)
                 .writer(writer)
                 .build();
     }
 
     @Bean
-    public ItemReader<Client> itemReader() {
-        return new FlatFileItemReaderBuilder<Client>()
+    public ItemReader<ClientFileDTO> itemReader() {
+            return new FlatFileItemReaderBuilder<ClientFileDTO>()
                 .name("reader-file")
                 .linesToSkip(1)
                 .resource(new FileSystemResource(path))
                 .delimited()
                 .delimiter(",")
                 .names("externalId", "name", "email", "productType", "amount", "active", "creationDate")
-                .targetType(Client.class)
+                .targetType(ClientFileDTO.class)
                 .build();
     }
 }
