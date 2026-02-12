@@ -1,15 +1,17 @@
-package org.batch.experimental.domain.entitie;
+package org.batch.experimental.infra.persistance;
 
 import lombok.Builder;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Builder
-public class Client {
-    @Id
+@Document("${apps.source.collection-mongo}")
+public class ClientDocument {
     private String id;
+    @Indexed(unique = true)
     private String externalId;
     private String name;
     private String email;
